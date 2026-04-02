@@ -44,7 +44,7 @@ class Train {
 }
 
 // Main class
-public class UC1InitializeTrain {
+public class TrainConsistsManagementAPP {
 
     public static void main(String[] args) {
 

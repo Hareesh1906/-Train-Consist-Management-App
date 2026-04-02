@@ -1,62 +1,38 @@
-import java.util.*;
+import java.util.HashSet;
+import java.util.Scanner;
 
-// Coach class
-class Coach {
-    String coachId;
-    String type; // Sleeper / AC / General
-    int capacity;
-
-    Coach(String coachId, String type, int capacity) {
-        this.coachId = coachId;
-        this.type = type;
-        this.capacity = capacity;
-    }
-
-    public String toString() {
-        return coachId + " (" + type + ", Capacity: " + capacity + ")";
-    }
-}
-
-// Train class
-class Train {
-    String trainName;
-    ArrayList<Coach> coaches;
-
-    Train(String trainName) {
-        this.trainName = trainName;
-        coaches = new ArrayList<>();
-    }
-
-    // Add coach
-    void addCoach(Coach c) {
-        coaches.add(c);
-    }
-
-    // Display summary
-    void displaySummary() {
-        System.out.println("Train: " + trainName);
-        System.out.println("Total Coaches: " + coaches.size());
-
-        for (Coach c : coaches) {
-            System.out.println(c);
-        }
-    }
-}
-
-// Main class
-public class TrainConsistsManagementAPP {
+public class TrainConsitsMangementApp {
 
     public static void main(String[] args) {
 
-        Train train = new Train("Express 101");
+        // HashSet to store unique bogie IDs
+        HashSet<String> bogieIDs = new HashSet<>();
 
-        // Add coaches
-        train.addCoach(new Coach("S1", "Sleeper", 72));
-        train.addCoach(new Coach("S2", "Sleeper", 72));
-        train.addCoach(new Coach("AC1", "AC", 50));
-        train.addCoach(new Coach("GEN1", "General", 100));
+        Scanner sc = new Scanner(System.in);
 
-        // Display summary
-        train.displaySummary();
+        System.out.print("Enter number of bogies: ");
+        int n = sc.nextInt();
+        sc.nextLine(); // consume newline
+
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter Bogie ID: ");
+            String id = sc.nextLine();
+
+            // Try adding to HashSet
+            if (bogieIDs.contains(id)) {
+                System.out.println("Duplicate Bogie ID not allowed!");
+            } else {
+                bogieIDs.add(id);
+                System.out.println("Bogie ID added successfully.");
+            }
+        }
+
+        // Display all unique bogie IDs
+        System.out.println("\nUnique Bogie IDs:");
+        for (String id : bogieIDs) {
+            System.out.println(id);
+        }
+
+        sc.close();
     }
 }

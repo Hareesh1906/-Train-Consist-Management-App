@@ -1,12 +1,10 @@
-import java.util.Scanner;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TrainConsitsMangementApp {
 
     public static void main(String[] args) {
 
-        // HashMap to map Bogie ID -> Capacity
+        // Map Bogie ID -> Capacity
         HashMap<String, Integer> bogieMap = new HashMap<>();
 
         Scanner sc = new Scanner(System.in);
@@ -19,24 +17,32 @@ public class TrainConsitsMangementApp {
             System.out.print("Enter Bogie ID: ");
             String id = sc.nextLine();
 
-            // Check duplicate bogie ID
             if (bogieMap.containsKey(id)) {
                 System.out.println("Duplicate Bogie ID not allowed!");
-                i--; // retry same index
+                i--;
                 continue;
             }
 
             System.out.print("Enter Capacity for " + id + ": ");
             int capacity = sc.nextInt();
-            sc.nextLine(); // consume newline
+            sc.nextLine();
 
             bogieMap.put(id, capacity);
-            System.out.println("Bogie added successfully.");
         }
 
-        // Display bogie and capacity
-        System.out.println("\nBogie Details (ID -> Capacity):");
-        for (Map.Entry<String, Integer> entry : bogieMap.entrySet()) {
+        // Convert map to list
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(bogieMap.entrySet());
+
+        // Sort by capacity (ascending)
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> a, Map.Entry<String, Integer> b) {
+                return a.getValue().compareTo(b.getValue());
+            }
+        });
+
+        // Display sorted result
+        System.out.println("\nBogies Sorted by Capacity:");
+        for (Map.Entry<String, Integer> entry : list) {
             System.out.println(entry.getKey() + " -> " + entry.getValue());
         }
 

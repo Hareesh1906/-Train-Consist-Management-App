@@ -1,12 +1,12 @@
 import java.util.Scanner;
-import java.util.TreeSet;
+import java.util.LinkedHashSet;
 
 public class TrainConsitsMangementApp {
 
     public static void main(String[] args) {
 
-        // TreeSet to store sorted & unique bogie IDs
-        TreeSet<String> bogieIDs = new TreeSet<>();
+        // LinkedHashSet preserves insertion order & ensures uniqueness
+        LinkedHashSet<String> bogieIDs = new LinkedHashSet<>();
 
         Scanner sc = new Scanner(System.in);
 
@@ -26,16 +26,10 @@ public class TrainConsitsMangementApp {
             }
         }
 
-        // Display sorted bogie IDs
-        System.out.println("\nSorted Bogie IDs:");
+        // Display bogie IDs in insertion order
+        System.out.println("\nBogie IDs (Insertion Order):");
         for (String id : bogieIDs) {
             System.out.println(id);
-        }
-
-        // Extra: first and last bogie
-        if (!bogieIDs.isEmpty()) {
-            System.out.println("\nFirst Bogie ID: " + bogieIDs.first());
-            System.out.println("Last Bogie ID: " + bogieIDs.last());
         }
 
         sc.close();

@@ -1,7 +1,7 @@
 import java.util.HashSet;
 import java.util.Scanner;
 
-public class TrainConsitsMangementApp {
+public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
@@ -18,11 +18,10 @@ public class TrainConsitsMangementApp {
             System.out.print("Enter Bogie ID: ");
             String id = sc.nextLine();
 
-            // Try adding to HashSet
-            if (bogieIDs.contains(id)) {
+            // Add and check duplicate in one step
+            if (!bogieIDs.add(id)) {
                 System.out.println("Duplicate Bogie ID not allowed!");
             } else {
-                bogieIDs.add(id);
                 System.out.println("Bogie ID added successfully.");
             }
         }

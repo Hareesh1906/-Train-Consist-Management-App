@@ -4,55 +4,48 @@ public class TrainConsitsMangementApp {
 
     public static void main(String[] args) {
 
-        HashMap<String, Integer> bogieMap = new HashMap<>();
+        HashMap<String, Integer> cargoMap = new HashMap<>();
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter number of bogies: ");
+        System.out.print("Enter number of cargo entries: ");
         int n = sc.nextInt();
         sc.nextLine(); // consume newline
 
         for (int i = 0; i < n; i++) {
 
-            System.out.print("Enter Bogie ID: ");
+            System.out.print("\nEnter Bogie ID: ");
             String id = sc.nextLine();
 
-            if (bogieMap.containsKey(id)) {
-                System.out.println("Duplicate Bogie ID not allowed!");
-                i--;
-                continue;
-            }
+            int weight = 0;
 
-            int capacity = 0;
-            boolean valid = false;
+            try {
+                System.out.print("Enter Cargo Weight (in tons): ");
+                weight = sc.nextInt();
+                sc.nextLine();
 
-            while (!valid) {
-                try {
-                    System.out.print("Enter Capacity for " + id + ": ");
-                    capacity = sc.nextInt();
-                    sc.nextLine();
-
-                    if (capacity <= 0) {
-                        throw new IllegalArgumentException("Capacity must be greater than 0!");
-                    }
-
-                    valid = true;
-
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Invalid Input: " + e.getMessage());
-                } catch (InputMismatchException e) {
-                    System.out.println("Invalid Input: Please enter a number!");
-                    sc.nextLine(); // clear buffer
+                if (weight <= 0) {
+                    throw new IllegalArgumentException("Weight must be greater than 0!");
                 }
-            }
 
-            bogieMap.put(id, capacity);
-            System.out.println("Bogie added successfully.");
+                cargoMap.put(id, weight);
+                System.out.println("Cargo assigned successfully ✔");
+
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input: Please enter numeric weight!");
+                sc.nextLine(); // clear buffer
+
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+
+            } finally {
+                System.out.println("Finalizing entry for Bogie: " + id);
+            }
         }
 
-        // Display final data
-        System.out.println("\nValid Bogie Capacities:");
-        for (Map.Entry<String, Integer> entry : bogieMap.entrySet()) {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        // Display cargo details
+        System.out.println("\nFinal Cargo Assignments:");
+        for (Map.Entry<String, Integer> entry : cargoMap.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue() + " tons");
         }
 
         sc.close();

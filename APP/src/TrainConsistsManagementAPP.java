@@ -4,55 +4,48 @@ public class TrainConsitsMangementApp {
 
     public static void main(String[] args) {
 
-        // Map Bogie ID -> (Type + Weight)
-        HashMap<String, String> typeMap = new HashMap<>();
-        HashMap<String, Integer> weightMap = new HashMap<>();
+        int n = 100000; // number of elements
 
-        Scanner sc = new Scanner(System.in);
+        // ---------------- HashSet ----------------
+        long startHash = System.nanoTime();
 
-        System.out.print("Enter number of bogies: ");
-        int n = sc.nextInt();
-        sc.nextLine(); // consume newline
-
+        HashSet<Integer> hashSet = new HashSet<>();
         for (int i = 0; i < n; i++) {
-
-            System.out.print("Enter Bogie ID: ");
-            String id = sc.nextLine();
-
-            if (typeMap.containsKey(id)) {
-                System.out.println("Duplicate Bogie ID not allowed!");
-                i--;
-                continue;
-            }
-
-            System.out.print("Enter Bogie Type (Passenger/Goods): ");
-            String type = sc.nextLine();
-
-            System.out.print("Enter Weight (in tons): ");
-            int weight = sc.nextInt();
-            sc.nextLine();
-
-            typeMap.put(id, type);
-            weightMap.put(id, weight);
+            hashSet.add(i);
         }
 
-        System.out.println("\nSafety Compliance Report (Goods Bogies):");
+        long endHash = System.nanoTime();
 
-        for (String id : typeMap.keySet()) {
+        // ---------------- TreeSet ----------------
+        long startTree = System.nanoTime();
 
-            String type = typeMap.get(id);
-            int weight = weightMap.get(id);
-
-            if (type.equalsIgnoreCase("Goods")) {
-
-                if (weight <= 100) {
-                    System.out.println(id + " -> SAFE ✔ (Weight: " + weight + ")");
-                } else {
-                    System.out.println(id + " -> NOT SAFE ✖ (Weight: " + weight + ")");
-                }
-            }
+        TreeSet<Integer> treeSet = new TreeSet<>();
+        for (int i = 0; i < n; i++) {
+            treeSet.add(i);
         }
 
-        sc.close();
+        long endTree = System.nanoTime();
+
+        // ---------------- LinkedHashSet ----------------
+        long startLinked = System.nanoTime();
+
+        LinkedHashSet<Integer> linkedSet = new LinkedHashSet<>();
+        for (int i = 0; i < n; i++) {
+            linkedSet.add(i);
+        }
+
+        long endLinked = System.nanoTime();
+
+        // ---------------- Results ----------------
+        System.out.println("Performance Comparison (Insertion of " + n + " elements)\n");
+
+        System.out.println("HashSet Time: " + (endHash - startHash) + " ns");
+        System.out.println("TreeSet Time: " + (endTree - startTree) + " ns");
+        System.out.println("LinkedHashSet Time: " + (endLinked - startLinked) + " ns");
+
+        System.out.println("\nNote:");
+        System.out.println("HashSet is fastest (no ordering)");
+        System.out.println("TreeSet is slowest (sorting required)");
+        System.out.println("LinkedHashSet is balanced (insertion order maintained)");
     }
 }

@@ -4,48 +4,57 @@ public class TrainConsitsMangementApp {
 
     public static void main(String[] args) {
 
-        int n = 100000; // number of elements
+        HashMap<String, Integer> bogieMap = new HashMap<>();
+        Scanner sc = new Scanner(System.in);
 
-        // ---------------- HashSet ----------------
-        long startHash = System.nanoTime();
+        System.out.print("Enter number of bogies: ");
+        int n = sc.nextInt();
+        sc.nextLine(); // consume newline
 
-        HashSet<Integer> hashSet = new HashSet<>();
         for (int i = 0; i < n; i++) {
-            hashSet.add(i);
+
+            System.out.print("Enter Bogie ID: ");
+            String id = sc.nextLine();
+
+            if (bogieMap.containsKey(id)) {
+                System.out.println("Duplicate Bogie ID not allowed!");
+                i--;
+                continue;
+            }
+
+            int capacity = 0;
+            boolean valid = false;
+
+            while (!valid) {
+                try {
+                    System.out.print("Enter Capacity for " + id + ": ");
+                    capacity = sc.nextInt();
+                    sc.nextLine();
+
+                    if (capacity <= 0) {
+                        throw new IllegalArgumentException("Capacity must be greater than 0!");
+                    }
+
+                    valid = true;
+
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid Input: " + e.getMessage());
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid Input: Please enter a number!");
+                    sc.nextLine(); // clear buffer
+                }
+            }
+
+            bogieMap.put(id, capacity);
+            System.out.println("Bogie added successfully.");
         }
 
-        long endHash = System.nanoTime();
-
-        // ---------------- TreeSet ----------------
-        long startTree = System.nanoTime();
-
-        TreeSet<Integer> treeSet = new TreeSet<>();
-        for (int i = 0; i < n; i++) {
-            treeSet.add(i);
+        // Display final data
+        System.out.println("\nValid Bogie Capacities:");
+        for (Map.Entry<String, Integer> entry : bogieMap.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
         }
 
-        long endTree = System.nanoTime();
-
-        // ---------------- LinkedHashSet ----------------
-        long startLinked = System.nanoTime();
-
-        LinkedHashSet<Integer> linkedSet = new LinkedHashSet<>();
-        for (int i = 0; i < n; i++) {
-            linkedSet.add(i);
-        }
-
-        long endLinked = System.nanoTime();
-
-        // ---------------- Results ----------------
-        System.out.println("Performance Comparison (Insertion of " + n + " elements)\n");
-
-        System.out.println("HashSet Time: " + (endHash - startHash) + " ns");
-        System.out.println("TreeSet Time: " + (endTree - startTree) + " ns");
-        System.out.println("LinkedHashSet Time: " + (endLinked - startLinked) + " ns");
-
-        System.out.println("\nNote:");
-        System.out.println("HashSet is fastest (no ordering)");
-        System.out.println("TreeSet is slowest (sorting required)");
-        System.out.println("LinkedHashSet is balanced (insertion order maintained)");
+        sc.close();
     }
 }

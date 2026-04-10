@@ -2,40 +2,59 @@ import java.util.Scanner;
 
 public class TrainConsitsMangementApp {
 
-    // Validate Train ID (Example: TR-1234)
-    public static boolean isValidTrainID(String trainID) {
-        return trainID.matches("TR-\\d{4}");
-    }
-
-    // Validate Cargo Code (Example: CG-ABC123)
-    public static boolean isValidCargoCode(String cargoCode) {
-        return cargoCode.matches("CG-[A-Z]{3}\\d{3}");
-    }
-
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
-        // Train ID validation
-        System.out.print("Enter Train ID (Format TR-1234): ");
-        String trainID = sc.nextLine();
+        try {
+            System.out.print("Enter number of bogies: ");
+            int n = sc.nextInt();
+            sc.nextLine(); // consume newline
 
-        if (isValidTrainID(trainID)) {
-            System.out.println("Valid Train ID ✔");
-        } else {
-            System.out.println("Invalid Train ID ✖");
+            if (n <= 0) {
+                throw new IllegalArgumentException("Number of bogies must be greater than 0!");
+            }
+
+            String[] bogieIDs = new String[n];
+
+            // Input bogie IDs
+            for (int i = 0; i < n; i++) {
+                System.out.print("Enter Bogie ID: ");
+                bogieIDs[i] = sc.nextLine();
+            }
+
+            System.out.print("\nEnter Bogie ID to search: ");
+            String searchID = sc.nextLine();
+
+            if (searchID.isEmpty()) {
+                throw new IllegalArgumentException("Search ID cannot be empty!");
+            }
+
+            boolean found = false;
+
+            // Linear Search
+            for (int i = 0; i < n; i++) {
+                if (bogieIDs[i].equalsIgnoreCase(searchID)) {
+                    System.out.println("Bogie ID FOUND at position: " + (i + 1));
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                System.out.println("Bogie ID NOT FOUND!");
+            }
+
         }
-
-        // Cargo Code validation
-        System.out.print("\nEnter Cargo Code (Format CG-ABC123): ");
-        String cargoCode = sc.nextLine();
-
-        if (isValidCargoCode(cargoCode)) {
-            System.out.println("Valid Cargo Code ✔");
-        } else {
-            System.out.println("Invalid Cargo Code ✖");
+        catch (IllegalArgumentException e) {
+            System.out.println("Input Error: " + e.getMessage());
         }
-
-        sc.close();
+        catch (Exception e) {
+            System.out.println("Unexpected Error: " + e.getMessage());
+        }
+        finally {
+            System.out.println("\nSearch operation completed (system cleanup done).");
+            sc.close();
+        }
     }
 }

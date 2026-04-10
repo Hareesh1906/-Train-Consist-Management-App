@@ -1,50 +1,40 @@
-import java.util.*;
+import java.util.Scanner;
 
 public class TrainConsitsMangementApp {
 
-    public static void main(String[] args) {
+    // Validate Train ID (Example: TR-1234)
+    public static boolean isValidTrainID(String trainID) {
+        return trainID.matches("TR-\\d{4}");
+    }
 
-        // Map Bogie ID -> Capacity (Seats)
-        HashMap<String, Integer> bogieMap = new HashMap<>();
+    // Validate Cargo Code (Example: CG-ABC123)
+    public static boolean isValidCargoCode(String cargoCode) {
+        return cargoCode.matches("CG-[A-Z]{3}\\d{3}");
+    }
+
+    public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter number of bogies: ");
-        int n = sc.nextInt();
-        sc.nextLine(); // consume newline
+        // Train ID validation
+        System.out.print("Enter Train ID (Format TR-1234): ");
+        String trainID = sc.nextLine();
 
-        for (int i = 0; i < n; i++) {
-            System.out.print("Enter Bogie ID: ");
-            String id = sc.nextLine();
-
-            if (bogieMap.containsKey(id)) {
-                System.out.println("Duplicate Bogie ID not allowed!");
-                i--;
-                continue;
-            }
-
-            System.out.print("Enter Capacity (Seats) for " + id + ": ");
-            int capacity = sc.nextInt();
-            sc.nextLine();
-
-            bogieMap.put(id, capacity);
+        if (isValidTrainID(trainID)) {
+            System.out.println("Valid Train ID ✔");
+        } else {
+            System.out.println("Invalid Train ID ✖");
         }
 
-        // Calculate total seats
-        int totalSeats = 0;
+        // Cargo Code validation
+        System.out.print("\nEnter Cargo Code (Format CG-ABC123): ");
+        String cargoCode = sc.nextLine();
 
-        for (int seats : bogieMap.values()) {
-            totalSeats += seats;
+        if (isValidCargoCode(cargoCode)) {
+            System.out.println("Valid Cargo Code ✔");
+        } else {
+            System.out.println("Invalid Cargo Code ✖");
         }
-
-        // Display bogie details
-        System.out.println("\nBogie Details (ID -> Seats):");
-        for (Map.Entry<String, Integer> entry : bogieMap.entrySet()) {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
-        }
-
-        // Display total seats
-        System.out.println("\nTotal Seats in Train: " + totalSeats);
 
         sc.close();
     }

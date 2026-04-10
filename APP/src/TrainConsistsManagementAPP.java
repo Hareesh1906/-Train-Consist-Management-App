@@ -1,12 +1,13 @@
 import java.util.Scanner;
-import java.util.LinkedHashSet;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TrainConsitsMangementApp {
 
     public static void main(String[] args) {
 
-        // LinkedHashSet preserves insertion order & ensures uniqueness
-        LinkedHashSet<String> bogieIDs = new LinkedHashSet<>();
+        // HashMap to map Bogie ID -> Capacity
+        HashMap<String, Integer> bogieMap = new HashMap<>();
 
         Scanner sc = new Scanner(System.in);
 
@@ -18,18 +19,25 @@ public class TrainConsitsMangementApp {
             System.out.print("Enter Bogie ID: ");
             String id = sc.nextLine();
 
-            // Add and check duplicate
-            if (!bogieIDs.add(id)) {
+            // Check duplicate bogie ID
+            if (bogieMap.containsKey(id)) {
                 System.out.println("Duplicate Bogie ID not allowed!");
-            } else {
-                System.out.println("Bogie ID added successfully.");
+                i--; // retry same index
+                continue;
             }
+
+            System.out.print("Enter Capacity for " + id + ": ");
+            int capacity = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            bogieMap.put(id, capacity);
+            System.out.println("Bogie added successfully.");
         }
 
-        // Display bogie IDs in insertion order
-        System.out.println("\nBogie IDs (Insertion Order):");
-        for (String id : bogieIDs) {
-            System.out.println(id);
+        // Display bogie and capacity
+        System.out.println("\nBogie Details (ID -> Capacity):");
+        for (Map.Entry<String, Integer> entry : bogieMap.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
         }
 
         sc.close();

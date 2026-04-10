@@ -1,12 +1,11 @@
 import java.util.*;
-import java.util.stream.*;
 
 public class TrainConsitsMangementApp {
 
     public static void main(String[] args) {
 
-        // Map Bogie ID -> Type
-        HashMap<String, String> bogieMap = new HashMap<>();
+        // Map Bogie ID -> Capacity (Seats)
+        HashMap<String, Integer> bogieMap = new HashMap<>();
 
         Scanner sc = new Scanner(System.in);
 
@@ -24,27 +23,28 @@ public class TrainConsitsMangementApp {
                 continue;
             }
 
-            System.out.print("Enter Bogie Type (Passenger/Goods): ");
-            String type = sc.nextLine();
+            System.out.print("Enter Capacity (Seats) for " + id + ": ");
+            int capacity = sc.nextInt();
+            sc.nextLine();
 
-            bogieMap.put(id, type);
+            bogieMap.put(id, capacity);
         }
 
-        // Group bogies by type using Streams
-        Map<String, List<String>> groupedBogies =
-                bogieMap.entrySet()
-                        .stream()
-                        .collect(Collectors.groupingBy(
-                                entry -> entry.getValue(),                 // key = type
-                                Collectors.mapping(entry -> entry.getKey(), // value = bogie ID
-                                        Collectors.toList())
-                        ));
+        // Calculate total seats
+        int totalSeats = 0;
 
-        // Display grouped bogies
-        System.out.println("\nGrouped Bogies by Type:");
-        for (Map.Entry<String, List<String>> entry : groupedBogies.entrySet()) {
+        for (int seats : bogieMap.values()) {
+            totalSeats += seats;
+        }
+
+        // Display bogie details
+        System.out.println("\nBogie Details (ID -> Seats):");
+        for (Map.Entry<String, Integer> entry : bogieMap.entrySet()) {
             System.out.println(entry.getKey() + " -> " + entry.getValue());
         }
+
+        // Display total seats
+        System.out.println("\nTotal Seats in Train: " + totalSeats);
 
         sc.close();
     }
